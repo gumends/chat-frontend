@@ -36,11 +36,12 @@ export default function Home() {
   const [nome, setNome] = useState<string>('')
   const [texto, setTexto] = useState<string>('')
   const [messages, setMessages] = useState<Message[]>([]);
+  const [id, setId] = useState<string>(uuid.v4());
 
   useEffect(() => {
     function recevedMessage(message: Payload){
       const newMessage: Message = {
-        id: uuid.v4(),
+        id: id,
         nome: message.name,
         text: message.text
       }
@@ -49,6 +50,7 @@ export default function Home() {
     socket.on('msgToClient', (message: Payload) => {
       recevedMessage(message);
     });
+    console.log(id);
   }, [messages, texto, nome]);
 
   function sendMessage() {
@@ -71,7 +73,7 @@ export default function Home() {
             >
               <Stack spacing={2}>
                 <FormControl>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Nome</FormLabel>
                   <Input value={nome} onChange={(event) => setNome(event.target.value)} autoFocus required />
                 </FormControl>
                 <Button type="submit">Entrar</Button>
